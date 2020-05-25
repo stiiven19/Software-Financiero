@@ -161,26 +161,37 @@ public class Registrar_Prestamo extends JDialog{
                 if ((garantia != null|| (CCfiador!=null && CCfiador!="")) && txCodigo.getText().length()>=3 && txMonto.getText().length()>4 && txTasaInteres.getText().length()>=1) {
                     if (garantia != null && (CCfiador!=null && CCfiador!="")) {
                         Prestamo prestamo = new Prestamo(txFechaSolicitud.getText(), null, CCfiador, garantia.getCodgarantia(), (String) jcbEstado.getSelectedItem(), CCcliente, txCodigo.getText(), null, null, Double.parseDouble(txMonto.getText()), Double.parseDouble(txTasaInteres.getText()));
-                        if (garantia.registrarGarantia()) {
+                        garantia.registrarGarantia();
+                        if (prestamo.Buscar_Prestamo()) {
+                            JOptionPane.showMessageDialog(rootPane, "El prestamo ya se encuentra registrado", "Atención!", JOptionPane.WARNING_MESSAGE);
+                        }else{
                             if (prestamo.registrarPrestamo()) {
-                                JOptionPane.showMessageDialog(rootPane, "-Prestamo registrado exitosamente", "Información!", JOptionPane.INFORMATION_MESSAGE);
-                                dispose();
+                            JOptionPane.showMessageDialog(rootPane, "-Prestamo registrado exitosamente", "Información!", JOptionPane.INFORMATION_MESSAGE);
+                            dispose();
                             }
                         }
                     }else{
                         if (garantia != null) {
                             Prestamo prestamo = new Prestamo(txFechaSolicitud.getText(), null, null, garantia.getCodgarantia(), (String) jcbEstado.getSelectedItem(), CCcliente, txCodigo.getText(), null, null, Double.parseDouble(txMonto.getText()), Double.parseDouble(txTasaInteres.getText()));
-                            if (garantia.registrarGarantia()) {
+                            garantia.registrarGarantia();
+                            if (prestamo.Buscar_Prestamo()) {
+                                JOptionPane.showMessageDialog(rootPane, "El prestamo ya se encuentra registrado", "Atención!", JOptionPane.WARNING_MESSAGE);
+                            }else{
                                 if (prestamo.registrarPrestamo()) {
-                                    JOptionPane.showMessageDialog(rootPane, "-Prestamo registrado exitosamente", "Información!", JOptionPane.INFORMATION_MESSAGE);
-                                    dispose();
-                                }
-                            }
-                        }else{
-                            Prestamo prestamo = new Prestamo(txFechaSolicitud.getText(), null, CCfiador, null, (String) jcbEstado.getSelectedItem(), CCcliente, txCodigo.getText(), null, null, Double.parseDouble(txMonto.getText()), Double.parseDouble(txTasaInteres.getText()));
-                            if (prestamo.registrarPrestamo()) {
                                 JOptionPane.showMessageDialog(rootPane, "-Prestamo registrado exitosamente", "Información!", JOptionPane.INFORMATION_MESSAGE);
                                 dispose();
+                                }
+                            }
+                            
+                        }else{
+                            Prestamo prestamo = new Prestamo(txFechaSolicitud.getText(), null, CCfiador, null, (String) jcbEstado.getSelectedItem(), CCcliente, txCodigo.getText(), null, null, Double.parseDouble(txMonto.getText()), Double.parseDouble(txTasaInteres.getText()));
+                            if (prestamo.Buscar_Prestamo()) {
+                                JOptionPane.showMessageDialog(rootPane, "El prestamo ya se encuentra registrado", "Atención!", JOptionPane.WARNING_MESSAGE);
+                            }else{
+                                if (prestamo.registrarPrestamo()) {
+                                JOptionPane.showMessageDialog(rootPane, "-Prestamo registrado exitosamente", "Información!", JOptionPane.INFORMATION_MESSAGE);
+                                dispose();
+                                }
                             }
                         }
                     }

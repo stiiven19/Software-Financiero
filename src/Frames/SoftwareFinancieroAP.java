@@ -19,7 +19,7 @@ public class SoftwareFinancieroAP {
      
         Cliente cliente = new Cliente(cedu, "steven andres","guerrero cruz","cra 4E #20-61","3163798800");
         //System.out.println("Registrocliente1: " + cliente.registrar_cliente());
-        cliente.registrar_cliente();
+        //cliente.registrar_cliente();
         
         Cliente fiador = new Cliente("12745947", "byron andres","guerrero martinez","cra 4E #20-61","3185554399");
         //System.out.println("Registrocliente2: " + fiador.registrar_cliente());

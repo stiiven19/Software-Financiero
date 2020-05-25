@@ -10,12 +10,8 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -154,18 +150,28 @@ public class Registrar_Cliente extends JDialog{
             }
         });
         
+        
         jbRegistrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Cliente cliente = new Cliente(txNDocumento.getText(),
+                if (txNombres.getText().length()>3 && txApellidos.getText().length()>3 && txNDocumento.getText().length()>4 && txDireccion.getText().length()>3 && txTelefono.getText().length()>4) {
+                    Cliente cliente = new Cliente(txNDocumento.getText(),
                         txNombres.getText(),
                         txApellidos.getText(),
                         txDireccion.getText(),
                         txTelefono.getText());
-                if (cliente.registrar_cliente()){
-                    JOptionPane.showMessageDialog(rootPane, "Cliente Registrado Exitosamente!", "info", JOptionPane.INFORMATION_MESSAGE);
+                    if (cliente.Buscar_Cliente()) {
+                        JOptionPane.showMessageDialog(rootPane, "El cliente ya ha sido registrado", "Atención", JOptionPane.WARNING_MESSAGE);
+                    }else{
+                        if (cliente.registrar_cliente()){
+                        JOptionPane.showMessageDialog(rootPane, "Cliente Registrado Exitosamente!", "info", JOptionPane.INFORMATION_MESSAGE);
+                        dispose();
+                        }
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Llenar todos los campos", "Atención", JOptionPane.WARNING_MESSAGE);
                 }
-                dispose();
+                
             }
         });
     }

@@ -72,4 +72,28 @@ public class Prestamo extends Transaccion{
         }
         return retorno;
     }
+    
+     public boolean Buscar_Prestamo(){
+        boolean retorno = false;
+        String url = "jdbc:postgresql://localhost:5432/InversionesPrestamos";
+        String usuario = "postgres";
+        String contraseña = "123";
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection conexion = DriverManager.getConnection(url, usuario,contraseña);
+            String sql
+                    = "select * from prestamos where codprestamo like '"+codtransaccion+"'";
+            java.sql.Statement st = conexion.createStatement();
+            ResultSet result = conexion.createStatement().executeQuery(sql);
+            while (result.next()) {         
+                retorno = true;
+            }
+            st.close();
+            conexion.close();
+            
+        }catch(Exception e){
+            System.out.println("ERROR DE CONEXION registro " + e.getMessage());
+        }
+        return retorno;
+    }
 }

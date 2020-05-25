@@ -48,6 +48,34 @@ public class Cliente {
         }
         return retorno;
     }
-    
+    public boolean Buscar_Cliente(){
+        boolean retorno = false;
+        String url = "jdbc:postgresql://localhost:5432/InversionesPrestamos";
+        String usuario = "postgres";
+        String contraseña = "123";
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection conexion = DriverManager.getConnection(url, usuario,contraseña);
+            String sql
+                    = "select * from clientes where ceducli like '"+ceducli+"'";
+            java.sql.Statement st = conexion.createStatement();
+            ResultSet result = conexion.createStatement().executeQuery(sql);
+            String id=null;
+            while (result.next()) {                
+                id = result.getString("ceducli");
+                String nombre = result.getString("nomcli");
+                String apellido = result.getString("apellicli");
+                String direccion = result.getString("dircli");
+                String telefono = result.getString("telecli");
+                retorno = true;
+            }
+            st.close();
+            conexion.close();
+            
+        }catch(Exception e){
+            System.out.println("ERROR DE CONEXION registro " + e.getMessage());
+        }
+        return retorno;
+    }
     
 }
