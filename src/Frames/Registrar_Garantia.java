@@ -6,8 +6,11 @@
 package Frames;
 
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -107,6 +110,54 @@ public class Registrar_Garantia extends JDialog {
                     JOptionPane.showMessageDialog(rootPane, "Rellenar Campos", "Atención!", JOptionPane.WARNING_MESSAGE);
                 }
                 
+            }
+        });
+        
+        txValor.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if(!(c>=48 && c<=57  ) && !(c>=00 && c<=31) && c!=127){
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                if (txValor.getText().length()+1>9){
+                    e.consume();
+                }
+            }
+        });
+        
+        txTipo.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if(!(c>=97 && c<=122) && !(c>=65 && c<=90) && !(c>=00 && c<=32) && c!=127 && c!='ñ' && c!='Ñ'){
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                if (txTipo.getText().length()+1>29){
+                    e.consume();
+                }
+            }
+        });
+        
+        txCodigo.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if (txCodigo.getText().length()+1>10){
+                    e.consume();
+                }
+            }
+        });
+        
+        txUbicacion.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if (txUbicacion.getText().length()+1>29){
+                    e.consume();
+                }
             }
         });
     }//eventos de botones

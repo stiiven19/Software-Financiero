@@ -10,6 +10,8 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -256,6 +258,42 @@ public class Registrar_Prestamo extends JDialog{
             }
         });//evento boton registrar fiador
         
+        txMonto.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if( !(c>=48 && c<=57  ) && !(c>=00 && c<=31) && c!=127){
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                if (txMonto.getText().length()+1>10){
+                    e.consume();
+                }
+            }
+        });
         
+        txTasaInteres.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if( !(c>=48 && c<=57  ) && !(c>=00 && c<=31) && c!=127 && c!=46){
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                if (txTasaInteres.getText().length()+1>6){
+                    e.consume();
+                }
+            }
+        });
+        
+        txCodigo.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if (txCodigo.getText().length()+1>10){
+                    e.consume();
+                }
+            }
+        });
     }//eventos de objetos de la ventana
 }

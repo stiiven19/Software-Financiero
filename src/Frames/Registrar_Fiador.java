@@ -6,7 +6,10 @@
 package Frames;
 
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JButton;
@@ -148,6 +151,20 @@ public class Registrar_Fiador extends JDialog {
             }else{
                 fiador="";
                 jlFiador.setText("Cliente con CC: "+txBuscar.getText()+" No Existe");
+            }
+        });
+        
+        txBuscar.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if( !(c>=48 && c<=57  ) && !(c>=00 && c<=31) && c!=127){
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                if (txBuscar.getText().length()+1>10){
+                    e.consume();
+                }
             }
         });
     }//eventos de objetos

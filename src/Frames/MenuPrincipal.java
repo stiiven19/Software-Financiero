@@ -8,8 +8,13 @@ package Frames;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ScrollPane;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
@@ -20,11 +25,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import java.util.Vector;
 
 public class MenuPrincipal extends javax.swing.JFrame {
 
     private     JLabel              jlMostrarPagos,jlCC;
-    private     JButton             jbBuscar, jbVisualizarCliente, jbRegistrarCliente, jbModificarCliente, jbRegistrarInversion,jbRegistrarPrestamo;
+    private     JButton             jbVisualizarCliente, jbRegistrarCliente, jbModificarCliente, jbRegistrarInversion,jbRegistrarPrestamo;
     private     JTextField          txaBuscar;
     private     JPanel              panel;
     private     JTable              table;
@@ -50,7 +56,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jlMostrarPagos = new JLabel("Mostrar Pagos");
         jlCC = new JLabel("CC:");
         
-        jbBuscar = new JButton("123");
         jbVisualizarCliente = new JButton("Visualizar Cliente");
         jbRegistrarCliente = new JButton("Registrar Cliente");
         jbModificarCliente = new JButton("Modificar Cliente");
@@ -64,7 +69,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jlMostrarPagos.setBounds(20, 23, 100, 15);
         
         jlCC.setBounds(285, 23, 20, 16);
-        jbBuscar.setBounds(433, 21, 23, 23);
         txaBuscar.setBounds(310, 22, 118, 19);
         
         
@@ -107,7 +111,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panel.add(jlMostrarPagos);
         panel.add(jlCC);
         
-        panel.add(jbBuscar);
         panel.add(jbVisualizarCliente);
         panel.add(jbRegistrarCliente);
         panel.add(jbModificarCliente);
@@ -131,17 +134,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jbRegistrarPrestamo.setEnabled(false);
         jbVisualizarCliente.setEnabled(false);
         
-        
-        
-        
         table.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row = table.getSelectedRow();
-                //System.out.println(tableModel.getValueAt(row, 0));
                 CCclienteSelected=""+tableModel.getValueAt(row, 1);
-                //System.out.println(tableModel.getValueAt(row, 2));
-                //System.out.println(tableModel.getValueAt(row, 3));
                 jbModificarCliente.setEnabled(true);
                 jbRegistrarInversion.setEnabled(true);
                 jbRegistrarPrestamo.setEnabled(true);
@@ -155,7 +152,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                
+                if (table.getSelectedRows().length>1){
+                    table.clearSelection();
+                    jbModificarCliente.setEnabled(false);
+                    jbRegistrarInversion.setEnabled(false);
+                    jbRegistrarPrestamo.setEnabled(false);
+                    jbVisualizarCliente.setEnabled(false);
+                    Toolkit.getDefaultToolkit().beep();
+                }
             }
 
             @Override
@@ -182,6 +186,62 @@ public class MenuPrincipal extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent e) {
                 new Registrar_Cliente(mainframe);
                 load();
+            }
+        });
+        
+        txaBuscar.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                txaBuscar.setText("");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txaBuscar.getText().length()==0){
+                    txaBuscar.setText("BUSCAR");
+                }
+            }
+        });
+        
+        txaBuscar.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if( !(c>=48 && c<=57  ) && !(c>=00 && c<=31) && c!=127){
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                if (txaBuscar.getText().length()+1>10){
+                    e.consume();
+                }
+            }
+            @Override
+            public void keyReleased(KeyEvent e){
+                load();
+                if(txaBuscar.getText().length()>0){
+                    Vector<String[]> vector = new Vector();
+                    String tx=txaBuscar.getText();
+                    for (int i = 0; i < table.getRowCount(); i++) {
+                        String values[]=new String[4];
+                        for (int j = 0; j < table.getColumnCount(); j++) {
+                            values[j]=""+tableModel.getValueAt(i, j);
+                        }
+                        vector.add(values);
+                    }
+                    int rowcont=table.getRowCount();
+                    for (int i = 0; i < rowcont; i++) {
+                        tableModel.removeRow(0);
+                    }
+                    for (int i = 0; i < vector.size(); i++) {
+                        String string =(String) vector.get(i)[1];
+
+                        if(tx.length()<=string.length()){
+                            if(tx.equals(string.substring(0, tx.length()))){
+                                tableModel.addRow(vector.get(i));
+                            }
+                        }
+                    }
+                }
             }
         });
     }
@@ -224,7 +284,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             result.close();
             st.close();
             conexion.close();
-        }catch(Exception e){
+        }catch(ClassNotFoundException | SQLException e){
             System.out.println("ERROR DE CONEXION " + e.getMessage());
         }
     }

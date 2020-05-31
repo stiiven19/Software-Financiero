@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
@@ -99,50 +100,6 @@ public class Registrar_Cliente extends JDialog{
     private void setupEvents() {
         this.setResizable(false);
         
-        txNDocumento.addKeyListener(new KeyListener() {//evento de solo numeros
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                char caracter=e.getKeyChar();
-                String textoNDocumento = txNDocumento.getText();
-                if (Character.isLetter(caracter)) {
-                    if (textoNDocumento.length()>0) {
-                        txNDocumento.setText("");
-                        txNDocumento.setText(textoNDocumento.substring(0, textoNDocumento.length()-1));
-                    }
-                }
-            }
-        });
-        
-        txTelefono.addKeyListener(new KeyListener() {//evento de solo numeros
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                char caracter=e.getKeyChar();
-                String textoTelefono = txTelefono.getText();
-                if (Character.isLetter(caracter)) {
-                    if (textoTelefono.length()>0) {
-                        txTelefono.setText("");
-                        txTelefono.setText(textoTelefono.substring(0, textoTelefono.length()-1));
-                    }
-                }
-            }
-        });
-        
         jbCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -172,6 +129,72 @@ public class Registrar_Cliente extends JDialog{
                     JOptionPane.showMessageDialog(rootPane, "Llenar todos los campos", "Atención", JOptionPane.WARNING_MESSAGE);
                 }
                 
+            }
+        });
+        
+        txNombres.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if(!(c>=97 && c<=122) && !(c>=65 && c<=90) && !(c>=00 && c<=32) && c!=127 && c!='ñ' && c!='Ñ'){
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                if (txNombres.getText().length()+1>30){
+                    e.consume();
+                }
+            }
+        });
+        
+        txApellidos.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if(!(c>=97 && c<=122) && !(c>=65 && c<=90) && !(c>=00 && c<=32) && c!=127 && c!='ñ' && c!='Ñ'){
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                if (txApellidos.getText().length()+1>30){
+                    e.consume();
+                }
+            }
+        });
+        
+        txNDocumento.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if(!(c>=48 && c<=57  ) && !(c>=00 && c<=31) && c!=127){
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                if (txNDocumento.getText().length()+1>10){
+                    e.consume();
+                }
+            }
+        });
+        
+        txTelefono.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if(!(c>=48 && c<=57  ) && !(c>=00 && c<=31) && c!=127){
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                if (txTelefono.getText().length()+1>10){
+                    e.consume();
+                }
+            }
+        });
+        
+        txDireccion.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();
+                if (txDireccion.getText().length()+1>50){
+                    e.consume();
+                }
             }
         });
     }
