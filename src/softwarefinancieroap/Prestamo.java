@@ -16,8 +16,10 @@ public class Prestamo extends Transaccion{
     String fiador;
     String garantia;
     String estado;
+    public String numerocuotas;
+    
     //constructor
-    public Prestamo(String fechSolicitud_pre, String fechAprobacion_pre, String fiador, String garantia, String estado, String ceducli, String codtransaccion, String fechInicio, String fechTermino, double monto, double interes) {
+    public Prestamo(String ceducli, String codtransaccion,String fechSolicitud_pre, String fechAprobacion_pre, String fechInicio, String fechTermino, double interes, double monto, String estado, String garantia, String fiador ) {
         super(ceducli, codtransaccion, fechInicio, fechTermino, monto, interes);
         this.fechSolicitud_pre = fechSolicitud_pre;
         this.fechAprobacion_pre = fechAprobacion_pre;
@@ -60,7 +62,8 @@ public class Prestamo extends Transaccion{
                                                                                                 + monto + "','" 
                                                                                                 + estado + "'," 
                                                                                                 + garantia + "," 
-                                                                                                + fiador + ")";
+                                                                                                + fiador + ","
+                                                                                                + numerocuotas+ ")";
             //System.out.println(sql);
             PreparedStatement sentenciasql = conexion.prepareStatement(sql);
             sentenciasql.executeUpdate();
@@ -73,7 +76,7 @@ public class Prestamo extends Transaccion{
         return retorno;
     }
     
-     public boolean Buscar_Prestamo(){
+    public boolean Buscar_Prestamo(){
         boolean retorno = false;
         String url = "jdbc:postgresql://localhost:5432/InversionesPrestamos";
         String usuario = "postgres";

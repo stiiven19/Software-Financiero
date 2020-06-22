@@ -29,7 +29,7 @@ public class SoftwareFinancieroAP {
         //System.out.println("RegistroGarantia: " + garantia.registrarGarantia());
         
         // String fechSolicitud_pre, String fechAprobacion_pre, int fiador, String garantia, char estado, int ceducli, String codtransaccion, String fechInicio, String fechTermino, double monto, double interes
-        Prestamo presta= new Prestamo("12/12/2012","12/12/2012","12745947","1234","pendiente",cedu,"123abc","12/12/2010","12/12/2012",10000,2);
+        //Prestamo presta= new Prestamo("12/12/2012","12/12/2012","12745947","1234","pendiente",cedu,"123abc","12/12/2010","12/12/2012",10000,2);
         //System.out.println("Registro Presstamo: " + presta.registrarPrestamo());
         
         

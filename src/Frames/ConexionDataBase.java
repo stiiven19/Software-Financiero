@@ -22,15 +22,15 @@ public class ConexionDataBase {
             
                     
             ResultSet result = conexion.createStatement().executeQuery(sql);
-            System.out.println(result);
+            //System.out.println(result);
             String[] retorno=str;
             String ne="";
             while (result.next()) {      
-                System.out.println("entro");
+                //System.out.println("entro");
                 for (int j = 0; j < str.length; j++) {
-                    System.out.println(str[j]);
+                    //System.out.println(str[j]);
                     retorno[j]=result.getString(str[j]);
-                    System.out.println(retorno[j]);
+                    //System.out.println(retorno[j]);
                     ne+=retorno[j]+"   ";
                 }
             }

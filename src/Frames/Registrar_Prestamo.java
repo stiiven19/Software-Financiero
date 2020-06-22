@@ -162,7 +162,7 @@ public class Registrar_Prestamo extends JDialog{
                 //txFechaInicio.getText().length()>3 && txFechaTermino.getText().length()>3 &&
                 if ((garantia != null|| (CCfiador!=null && CCfiador!="")) && txCodigo.getText().length()>=3 && txMonto.getText().length()>4 && txTasaInteres.getText().length()>=1) {
                     if (garantia != null && (CCfiador!=null && CCfiador!="")) {
-                        Prestamo prestamo = new Prestamo(txFechaSolicitud.getText(), null, CCfiador, garantia.getCodgarantia(), (String) jcbEstado.getSelectedItem(), CCcliente, txCodigo.getText(), null, null, Double.parseDouble(txMonto.getText()), Double.parseDouble(txTasaInteres.getText()));
+                        Prestamo prestamo = new Prestamo(CCcliente, txCodigo.getText(), txFechaSolicitud.getText(),null, null, null, Double.parseDouble(txTasaInteres.getText()), Double.parseDouble(txMonto.getText()), (String) jcbEstado.getSelectedItem(), garantia.getCodgarantia(), CCfiador);
                         garantia.registrarGarantia();
                         if (prestamo.Buscar_Prestamo()) {
                             JOptionPane.showMessageDialog(rootPane, "El prestamo ya se encuentra registrado", "Atención!", JOptionPane.WARNING_MESSAGE);
@@ -174,7 +174,7 @@ public class Registrar_Prestamo extends JDialog{
                         }
                     }else{
                         if (garantia != null) {
-                            Prestamo prestamo = new Prestamo(txFechaSolicitud.getText(), null, null, garantia.getCodgarantia(), (String) jcbEstado.getSelectedItem(), CCcliente, txCodigo.getText(), null, null, Double.parseDouble(txMonto.getText()), Double.parseDouble(txTasaInteres.getText()));
+                            Prestamo prestamo = new Prestamo(CCcliente, txCodigo.getText(), txFechaSolicitud.getText(),null, null, null, Double.parseDouble(txTasaInteres.getText()), Double.parseDouble(txMonto.getText()), (String) jcbEstado.getSelectedItem(), garantia.getCodgarantia(), null);
                             garantia.registrarGarantia();
                             if (prestamo.Buscar_Prestamo()) {
                                 JOptionPane.showMessageDialog(rootPane, "El prestamo ya se encuentra registrado", "Atención!", JOptionPane.WARNING_MESSAGE);
@@ -186,7 +186,7 @@ public class Registrar_Prestamo extends JDialog{
                             }
                             
                         }else{
-                            Prestamo prestamo = new Prestamo(txFechaSolicitud.getText(), null, CCfiador, null, (String) jcbEstado.getSelectedItem(), CCcliente, txCodigo.getText(), null, null, Double.parseDouble(txMonto.getText()), Double.parseDouble(txTasaInteres.getText()));
+                            Prestamo prestamo = new Prestamo(CCcliente, txCodigo.getText(), txFechaSolicitud.getText(),null, null, null, Double.parseDouble(txTasaInteres.getText()), Double.parseDouble(txMonto.getText()), (String) jcbEstado.getSelectedItem(), null, CCfiador);
                             if (prestamo.Buscar_Prestamo()) {
                                 JOptionPane.showMessageDialog(rootPane, "El prestamo ya se encuentra registrado", "Atención!", JOptionPane.WARNING_MESSAGE);
                             }else{

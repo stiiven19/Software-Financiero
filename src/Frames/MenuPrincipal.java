@@ -7,7 +7,6 @@
 package Frames;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.ScrollPane;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,23 +25,23 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.Vector;
+import javax.swing.ImageIcon;
 
 public class MenuPrincipal extends javax.swing.JFrame {
 
-    private     JLabel              jlMostrarPagos,jlCC;
-    private     JButton             jbVisualizarCliente, jbRegistrarCliente, jbModificarCliente, jbRegistrarInversion,jbRegistrarPrestamo;
+    private     JLabel              jlMostrarPagos,jlCC,jlimagePrestamos,jlimageInversiones;
+    private     JButton             jbVisualizarCliente, jbRegistrarCliente, jbModificarCliente, jbRegistrarInversion, jbRegistrarPrestamo, jbVerPrestamos, jbVerInversiones;
     private     JTextField          txaBuscar;
-    private     JPanel              panel;
+    private     JPanel              panelCenter;
     private     JTable              table;
     private     DefaultTableModel   tableModel;
-    private     ScrollPane          scrollPane;
     private final     MenuPrincipal       mainframe= this;
     private     String              CCclienteSelected;
     
     public MenuPrincipal() {
         
         setTitle("                  MAVENSAKAR");
-	setSize(600, 400);
+	setSize(700, 400);
         setupWidgets();
         setupEvents();
         setVisible(true);
@@ -51,38 +50,48 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void setupWidgets() {
         //inicializamos objetos
-        panel = new JPanel();
+        panelCenter = new JPanel();
         
         jlMostrarPagos = new JLabel("Mostrar Pagos");
         jlCC = new JLabel("CC:");
+        jlimagePrestamos = new JLabel();jlimagePrestamos.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("images/verPrestamos.jpg")));
+        jlimageInversiones =  new JLabel();jlimageInversiones.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("images/verInversiones.jpg")));
         
         jbVisualizarCliente = new JButton("Visualizar Cliente");
         jbRegistrarCliente = new JButton("Registrar Cliente");
         jbModificarCliente = new JButton("Modificar Cliente");
         jbRegistrarPrestamo = new JButton("Registrar Prestamo");
         jbRegistrarInversion = new JButton("Registrar Inversion");
+        jbVerPrestamos =  new JButton("Ver Prestamos");
+        jbVerInversiones =  new JButton("Ver Inversiones");
         
         JScrollPane jscrollPane = new JScrollPane();
         
         txaBuscar = new JTextField("BUSCAR");
+        
         //ponemos ubicacion de objetos
         jlMostrarPagos.setBounds(20, 23, 100, 15);
-        
+        jlimagePrestamos.setBounds(500, 10, 160, 130);
+        jlimageInversiones.setBounds(500, 180, 160, 130);
         jlCC.setBounds(285, 23, 20, 16);
+        
         txaBuscar.setBounds(310, 22, 118, 19);
         
-        
-        jbVisualizarCliente.setBounds( 20, 263,132, 25);
+        jbVisualizarCliente.setBounds(20, 263,132, 25);
         jbRegistrarCliente.setBounds(172, 263, 130, 25);
         jbModificarCliente.setBounds(322, 263, 130, 25);
         
         jbRegistrarInversion.setBounds(92, 318, 143, 25);
         jbRegistrarPrestamo.setBounds(255, 318, 150, 25);
         
+        jbVerInversiones.setBounds(510, 320, 130, 20);
+        jbVerPrestamos.setBounds(510, 150, 130, 20);
+        
         jscrollPane.setBounds(20, 63, 433,183 );
         table = new JTable();
         
-        panel.setLayout(null);panel.setBackground(new Color(247,247,247));
+        panelCenter.setLayout(null);panelCenter.setBackground(new Color(247,247,247));
+        //panelRight.setLayout(null);//panelRight.setBackground(new Color(247,247,247));
         
         tableModel = new DefaultTableModel(
                 new Object[][] {},
@@ -90,36 +99,37 @@ public class MenuPrincipal extends javax.swing.JFrame {
         ){
             @Override
             public boolean isCellEditable(int row, int column) {
-                if(column==4){
-                    return true;
-                }else{
-                    return false;
-                }
+                return column==4;
             }
         };
         
         table.setModel(tableModel);
                 
-        table.getColumnModel().getColumn(0).setPreferredWidth(20);
-        table.getColumnModel().getColumn(1).setPreferredWidth(130);
-        table.getColumnModel().getColumn(2).setPreferredWidth(93);        
+        table.getColumnModel().getColumn(0).setPreferredWidth(5);
+        table.getColumnModel().getColumn(1).setPreferredWidth(60);
+        table.getColumnModel().getColumn(2).setPreferredWidth(80);        
         jscrollPane.setViewportView(table);
         
+        //agregamos al panelcentro
+        panelCenter.add(jlMostrarPagos);
+        panelCenter.add(jlCC);
         
+        panelCenter.add(jbVisualizarCliente);
+        panelCenter.add(jbRegistrarCliente);
+        panelCenter.add(jbModificarCliente);
+        panelCenter.add(jbRegistrarInversion);
+        panelCenter.add(jbRegistrarPrestamo);
+        panelCenter.add(txaBuscar);
+        panelCenter.add(jscrollPane);
         
-        //agregamos al panel
-        panel.add(jlMostrarPagos);
-        panel.add(jlCC);
+        //derecha
+        panelCenter.add(jlimageInversiones);
+        panelCenter.add(jlimagePrestamos);
         
-        panel.add(jbVisualizarCliente);
-        panel.add(jbRegistrarCliente);
-        panel.add(jbModificarCliente);
-        panel.add(jbRegistrarInversion);
-        panel.add(jbRegistrarPrestamo);
-        panel.add(txaBuscar);
-        panel.add(jscrollPane);
-        
-        add(panel,BorderLayout.CENTER);
+        panelCenter.add(jbVerInversiones);
+        panelCenter.add(jbVerPrestamos);
+        add(panelCenter,BorderLayout.CENTER);
+        //add(panelRight,BorderLayout.EAST);
     }    
     //Eventos
     private void setupEvents(){
@@ -133,16 +143,30 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jbRegistrarInversion.setEnabled(false);
         jbRegistrarPrestamo.setEnabled(false);
         jbVisualizarCliente.setEnabled(false);
+        jbVerPrestamos.setEnabled(false);
+        jbVerInversiones.setEnabled(false);
         
         table.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row = table.getSelectedRow();
-                CCclienteSelected=""+tableModel.getValueAt(row, 1);
-                jbModificarCliente.setEnabled(true);
-                jbRegistrarInversion.setEnabled(true);
-                jbRegistrarPrestamo.setEnabled(true);
-                jbVisualizarCliente.setEnabled(true);
+                try {
+                    CCclienteSelected=""+tableModel.getValueAt(row, 1);
+                    jbModificarCliente.setEnabled(true);
+                    jbRegistrarInversion.setEnabled(true);
+                    jbRegistrarPrestamo.setEnabled(true);
+                    jbVisualizarCliente.setEnabled(true);
+                    jbVerPrestamos.setEnabled(true);
+                    jbVerInversiones.setEnabled(true);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    jbModificarCliente.setEnabled(false);
+                    jbRegistrarInversion.setEnabled(false);
+                    jbRegistrarPrestamo.setEnabled(false);
+                    jbVisualizarCliente.setEnabled(false);
+                    jbVerPrestamos.setEnabled(false);
+                    jbVerInversiones.setEnabled(false);
+                    Toolkit.getDefaultToolkit().beep();
+                }
             }
 
             @Override
@@ -158,6 +182,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     jbRegistrarInversion.setEnabled(false);
                     jbRegistrarPrestamo.setEnabled(false);
                     jbVisualizarCliente.setEnabled(false);
+                    jbVerPrestamos.setEnabled(false);
+                    jbVerInversiones.setEnabled(false);
                     Toolkit.getDefaultToolkit().beep();
                 }
             }
@@ -181,11 +207,32 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
         
+        jbRegistrarInversion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Registrar_Inversion registrar_inversion = new Registrar_Inversion(mainframe,CCclienteSelected);
+            }
+        });
+        
         jbRegistrarCliente.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Registrar_Cliente(mainframe);
                 load();
+            }
+        });
+        
+        jbVerInversiones.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        
+        jbVerPrestamos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Ver_Prestamos ver_prestamos = new Ver_Prestamos(mainframe,CCclienteSelected);
             }
         });
         
