@@ -6,6 +6,7 @@
 package Frames;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -83,6 +84,8 @@ public class Registrar_CuentaBancaria extends JDialog{
     }
 
     private void setupEvents() {
+        jbCancelar.setBackground(new Color(36, 83, 181));
+        jbRegistrar.setBackground(new Color(36, 83, 181));
         this.setResizable(false);
         
         jbCancelar.addActionListener(new ActionListener() {
@@ -101,14 +104,22 @@ public class Registrar_CuentaBancaria extends JDialog{
                     }else{
                         cuenta = new CuentaBancaria(txNumeroCuenta.getText(), txBanco.getText(), "corriente");
                     }
-                    if(cuenta.Buscar_CuentaBancaria()){
-                        JOptionPane.showMessageDialog(rootPane, "Error.\nEl Numero de la cuenta ya esta regitrado", "Atención!", JOptionPane.WARNING_MESSAGE);
+                    String [] Cuentadatos=cuenta.Buscar_CuentaBancaria();
+                    if(Cuentadatos[0]!= null){
+                        if(JOptionPane.showConfirmDialog(rootPane, "El numero de cuenta Ya se encuentra registrado\nDesea usar la cuenta: \n-"+Cuentadatos[0]+"\n-"+Cuentadatos[1]+"\n-"+Cuentadatos[2], "Atención", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)==0){
+                            JOptionPane.showMessageDialog(rootPane, "Cuenta Bancaria Registrada", "Info", JOptionPane.INFORMATION_MESSAGE);
+                            cuenta = new CuentaBancaria(Cuentadatos[0], Cuentadatos[1], Cuentadatos[2]);
+                            setVisible(false);
+                            dispose();
+                        }else{
+                            cuenta=null;
+                            txNumeroCuenta.setText("");
+                        }
                     }else{
                         JOptionPane.showMessageDialog(rootPane, "Cuenta Bancaria Registrada", "Info", JOptionPane.INFORMATION_MESSAGE);
                         setVisible(false);
                         dispose();
                     }
-                    
                 }else{
                     JOptionPane.showMessageDialog(rootPane, "Rellenar Campos", "Atención!", JOptionPane.WARNING_MESSAGE);
                 } 

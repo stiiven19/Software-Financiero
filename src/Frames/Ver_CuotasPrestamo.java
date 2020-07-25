@@ -12,6 +12,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -24,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author lenovo
  */
-public class Ver_Cuotas extends JDialog{
+public class Ver_CuotasPrestamo extends JDialog{
     private final String        CCcliente,Prestamo;
     private JLabel              jlPrestamo, jlCliente,jlCuotasPagadas,jlCuotasEspera;
     private JButton             jbRegresar;
@@ -34,7 +37,7 @@ public class Ver_Cuotas extends JDialog{
     //private final Ver_Cuotas    mainVerCuotas=this;
     
     
-    public Ver_Cuotas(Ver_Prestamos mainframe, String CCcliente,String Prestamo){
+    public Ver_CuotasPrestamo(Ver_Prestamos mainframe, String CCcliente,String Prestamo){
         super(mainframe, true);
         this.CCcliente = CCcliente;
         this.Prestamo = Prestamo;
@@ -119,6 +122,7 @@ public class Ver_Cuotas extends JDialog{
     }
 
     private void setupEvents() {
+        jbRegresar.setBackground(new Color(36, 83, 181));
         tableEspera.getTableHeader().setReorderingAllowed(false);//evita reordenar las columnas
         tablePagadas.getTableHeader().setReorderingAllowed(false);//evita reordenar las columnas
         jbRegresar.addActionListener((ActionEvent e) -> {
@@ -141,25 +145,26 @@ public class Ver_Cuotas extends JDialog{
             while (result.next()) {                
                 String [] values = new String[7];
                 String numerocuota = result.getString("numerocuota");
-                String fechpago = result.getString("fechpago");
+                Date fechpago = result.getDate("fechpago");
                 String monto = result.getString("montocuota");
                 String estado = result.getString("estadocuota");
                 String tipo = result.getString("tipopago");
                 String codcomprobante = result.getString("codcomprobante");
-                String fechefectiva = result.getString("fechefectiva");
+                Date fechefectiva = result.getDate("fechefectiva");
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 if("Pagada".equals(estado)){
                     
                     values[0]= numerocuota;
-                    values[1] = fechpago;
+                    values[1] = ""+dateFormat.format(fechpago);
                     values[2] = monto;
                     values[3] = estado;
                     values[4] = tipo;
                     values[5] = codcomprobante;
-                    values[6] = fechefectiva;
+                    values[6] = ""+dateFormat.format(fechefectiva);
                     tableModel1.addRow(values);
                 }else{
                     values[0]= numerocuota;
-                    values[1] = fechpago;
+                    values[1] = ""+dateFormat.format(fechpago);
                     values[2] = monto;
                     values[3] = estado;
                     tablemodel2.addRow(values);

@@ -17,17 +17,32 @@ public class Cuota {
     String numeroCuota,fechPago,estadoCuota,tipoPago,codcomprobante,fechEfectiva,codtransaccion,cuentaBanco;
     double montoCuota;
 
-    public Cuota(String numeroCuota, String fechPago, String estadoCuota, String tipoPago, String codcomprobante, String fechEfectiva, String codtransaccion, String cuentaBanco, double montoCuota) {
+    public Cuota(String numeroCuota, String fechPago, String estadoCuota, String codtransaccion, String cuentaBanco, double montoCuota) {
         this.numeroCuota = numeroCuota;
         this.fechPago = fechPago;
         this.estadoCuota = estadoCuota;
-        this.tipoPago = tipoPago;
-        this.codcomprobante = codcomprobante;
-        this.fechEfectiva = fechEfectiva;
         this.codtransaccion = codtransaccion;
         this.cuentaBanco = cuentaBanco;
         this.montoCuota = montoCuota;
     }
+
+    public void setEstadoCuota(String estadoCuota) {
+        this.estadoCuota = estadoCuota;
+    }
+
+    public void setTipoPago(String tipoPago) {
+        this.tipoPago = tipoPago;
+    }
+
+    public void setCodcomprobante(String codcomprobante) {
+        this.codcomprobante = codcomprobante;
+    }
+
+    public void setFechEfectiva(String fechEfectiva) {
+        this.fechEfectiva = fechEfectiva;
+    }
+    
+    
     
     public boolean registrarCuota(boolean bandera){
         boolean retorno = false;
@@ -37,7 +52,7 @@ public class Cuota {
         try {
             Class.forName("org.postgresql.Driver");
             Connection conexion = DriverManager.getConnection(url, usuario,contraseña);
-            String sql;
+            String sql; 
             if(bandera){
                 sql
                     = "insert into cuotainversion values ('"+ numeroCuota+ "','" 
@@ -74,7 +89,7 @@ public class Cuota {
         
     }
     
-    public boolean pagarCuota(boolean bandera){
+    public boolean pagarCuota(){
         boolean retorno = false;
         String url = "jdbc:postgresql://localhost:5432/InversionesPrestamos";
         String usuario = "postgres";
@@ -83,30 +98,11 @@ public class Cuota {
             Class.forName("org.postgresql.Driver");
             Connection conexion = DriverManager.getConnection(url, usuario,contraseña);
             String sql;
-            if(bandera){
-                sql
-                    = "insert into cuotainversion values ('"+ numeroCuota+ "','" 
-                        + fechPago +"','" 
-                        + montoCuota +"','"
-                        + estadoCuota +"',"
-                        + tipoPago +","
-                        + codcomprobante +","
-                        + fechEfectiva +",'"
-                        + codtransaccion +"','"
-                        + cuentaBanco +"')";
-            }else{
-                sql
-                    = "insert into cuotainversion values ('"+ numeroCuota+ "','" 
-                        + fechPago +"','" 
-                        + montoCuota +"','"
-                        + estadoCuota +"',"
-                        + tipoPago +","
-                        + codcomprobante +","
-                        + fechEfectiva +",'"
-                        + codtransaccion +"')";
-            }
-            
-            //System.out.println(sql);
+            sql
+                = "update cuotainversion set estadocuota = '"+estadoCuota+"' where codinversion like '"+codtransaccion+"' and numerocuota like '"+numeroCuota+"';"
+                    + "\nupdate cuotainversion set tipopago = '"+tipoPago+"' where codinversion like '"+codtransaccion+"' and numerocuota like '"+numeroCuota+"';"
+                    + "\nupdate cuotainversion set codcomprobante = '"+codcomprobante+"' where codinversion like '"+codtransaccion+"' and numerocuota like '"+numeroCuota+"';"
+                    + "\nupdate cuotainversion set fechefectiva = '"+fechEfectiva+"' where codinversion like '"+codtransaccion+"' and numerocuota like '"+numeroCuota+"';";
             PreparedStatement sentenciasql = conexion.prepareStatement(sql);
             sentenciasql.executeUpdate();
             sentenciasql.close();

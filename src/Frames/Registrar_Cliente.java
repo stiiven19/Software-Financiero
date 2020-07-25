@@ -1,18 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Frames;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -21,10 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import softwarefinancieroap.Cliente;
-/**
- *
- * @author lenovo
- */
+
 public class Registrar_Cliente extends JDialog{
     
     private JLabel      jlRegistroCliente, jlNombres, jlApellidos, jlNDocumento,jlDireccion, jlTelefono, jlClientes, jlImageCliente;
@@ -39,12 +31,12 @@ public class Registrar_Cliente extends JDialog{
         setupWidgets();
         setupEvents();
         setVisible(true);
-        
     }
 
     private void setupWidgets() {
-        jlRegistroCliente = new JLabel("RegistroCliente");
-        jlClientes = new JLabel("Clientes");
+        
+        jlRegistroCliente = new JLabel("Registro Cliente");jlRegistroCliente.setFont(new Font("Comic Sans MS",1,22));
+        jlClientes = new JLabel("Clientes");jlClientes.setFont(new Font("Comic Sans MS",0,15));
         jlDireccion = new JLabel("Direccion:");
         jlImageCliente = new JLabel();
         jlNDocumento = new JLabel("N.Documento:");
@@ -63,7 +55,7 @@ public class Registrar_Cliente extends JDialog{
         
         panel =  new JPanel(null);panel.setBackground(new Color(247,247,247));
         
-        jlRegistroCliente.setBounds(20, 30, 120, 30);
+        jlRegistroCliente.setBounds(20, 30, 200, 30);
         jlNombres.setBounds(20, 90, 90, 20);txNombres.setBounds(120, 90, 120, 20);
         jlApellidos.setBounds(20, 130, 90, 20);txApellidos.setBounds(120, 130, 120, 20);
         jlNDocumento.setBounds(20, 170, 90, 20);txNDocumento.setBounds(120, 170, 120, 20);
@@ -74,7 +66,6 @@ public class Registrar_Cliente extends JDialog{
         
         jbRegistrar.setBounds(140, 300, 90, 20);
         jbCancelar.setBounds(240, 300, 90, 20);
-        
         
         panel.add(jlClientes);
         panel.add(jlDireccion);
@@ -98,24 +89,25 @@ public class Registrar_Cliente extends JDialog{
     }
 
     private void setupEvents() {
+        jbCancelar.setBackground(new Color(36, 83, 181));
+        jbRegistrar.setBackground(new Color(36, 83, 181));
         this.setResizable(false);
         
         jbCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                if(JOptionPane.showConfirmDialog(rootPane, "Desea Cancelar El Proceso de registro?", "Atención", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)==0)dispose();
             }
         });
-        
         
         jbRegistrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (txNombres.getText().length()>3 && txApellidos.getText().length()>3 && txNDocumento.getText().length()>4 && txDireccion.getText().length()>3 && txTelefono.getText().length()>4) {
+                if (verificarCampos() && verificarEspacios()) {
                     Cliente cliente = new Cliente(txNDocumento.getText(),
-                        txNombres.getText(),
-                        txApellidos.getText(),
-                        txDireccion.getText(),
+                        txNombres.getText().toLowerCase(),
+                        txApellidos.getText().toLowerCase(),
+                        txDireccion.getText().toLowerCase(),
                         txTelefono.getText());
                     if (cliente.Buscar_Cliente()) {
                         JOptionPane.showMessageDialog(rootPane, "El cliente ya ha sido registrado", "Atención", JOptionPane.WARNING_MESSAGE);
@@ -125,10 +117,7 @@ public class Registrar_Cliente extends JDialog{
                         dispose();
                         }
                     }
-                }else{
-                    JOptionPane.showMessageDialog(rootPane, "Llenar todos los campos", "Atención", JOptionPane.WARNING_MESSAGE);
                 }
-                
             }
         });
         
@@ -197,5 +186,30 @@ public class Registrar_Cliente extends JDialog{
                 }
             }
         });
+    }
+    
+    private boolean verificarEspacios(){
+        int espaciosNombres=0,espaciosApellidos=0;
+        String cadena=txNombres.getText();
+        for (int i = 0; i < cadena.length(); i++) {
+        if (cadena.charAt(i) == ' ') espaciosNombres++;
+        }
+        cadena=txApellidos.getText();
+        for (int i = 0; i < cadena.length(); i++) { 
+        if (cadena.charAt(i) == ' ') espaciosApellidos++;
+        }
+        if(espaciosNombres>1 || espaciosApellidos>1){
+            JOptionPane.showMessageDialog(rootPane, "Los Nombres o Apellidos deben tener 1 solo espacio", "Atención", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean verificarCampos(){
+        if(!(txNombres.getText().length()>3 && txApellidos.getText().length()>3 && txNDocumento.getText().length()>4 && txDireccion.getText().length()>3 && txTelefono.getText().length()>4)){
+            JOptionPane.showMessageDialog(rootPane, "Llenar todos los campos", "Atención", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
     }
 }

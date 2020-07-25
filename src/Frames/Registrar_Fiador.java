@@ -84,6 +84,9 @@ public class Registrar_Fiador extends JDialog {
     }//posicionamiento de objetos
 
     private void setupEvents() {
+        jbBuscar.setBackground(new Color(36, 83, 181));
+        jbCancelar.setBackground(new Color(36, 83, 181));
+        jbRegistrar.setBackground(new Color(36, 83, 181));
         this.setResizable(false);
         this.addWindowListener(new WindowListener() {
             @Override

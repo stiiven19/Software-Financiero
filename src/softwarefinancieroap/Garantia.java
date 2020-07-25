@@ -68,11 +68,12 @@ public class Garantia {
         
     }
     
-    public boolean Buscar_Garantia(){
+    public String [] Buscar_Garantia(){
         boolean retorno = false;
         String url = "jdbc:postgresql://localhost:5432/InversionesPrestamos";
         String usuario = "postgres";
         String contraseña = "123";
+        String [] values = null;
         try {
             Class.forName("org.postgresql.Driver");
             Connection conexion = DriverManager.getConnection(url, usuario,contraseña);
@@ -80,9 +81,16 @@ public class Garantia {
                     = "select * from garantias where codgarantia like '"+codgarantia+"'";
             java.sql.Statement st = conexion.createStatement();
             ResultSet result = conexion.createStatement().executeQuery(sql);
-            
             while (result.next()) {      
-                retorno = true;
+                values = new String[4];
+                String codgarantiaa = result.getString("codgarantia");
+                String tipogarantia = result.getString("tipogarantia");
+                String valorr = result.getString("valor");
+                String ubicacionn = result.getString("ubicacion");
+                values[0] = codgarantiaa;
+                values[1] = tipogarantia;
+                values[2] = valorr;
+                values[3] = ubicacionn;
             }
             st.close();
             conexion.close();
@@ -90,6 +98,6 @@ public class Garantia {
         }catch(Exception e){
             System.out.println("ERROR DE CONEXION registro " + e.getMessage());
         }
-        return retorno;
+        return values;
     }
 }

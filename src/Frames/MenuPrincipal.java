@@ -1,10 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Frames;
+import SliderButton.ChangeSwitchListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -14,8 +9,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,6 +21,8 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.Vector;
 import javax.swing.ImageIcon;
+import softwarefinancieroap.Cliente;
+import SliderButton.Switcher;
 
 public class MenuPrincipal extends javax.swing.JFrame {
 
@@ -37,10 +34,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private     DefaultTableModel   tableModel;
     private final     MenuPrincipal       mainframe= this;
     private     String              CCclienteSelected;
+    private     Switcher            swich;
+    private     boolean             cargo;
     
-    public MenuPrincipal() {
+    public MenuPrincipal(boolean cargo) {
         
-        setTitle("                  MAVENSAKAR");
+        setTitle("MAVENSAKAR");
+        this.cargo = cargo;
 	setSize(700, 400);
         setupWidgets();
         setupEvents();
@@ -68,9 +68,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         JScrollPane jscrollPane = new JScrollPane();
         
         txaBuscar = new JTextField("BUSCAR");
+        swich = new Switcher(false);
         
         //ponemos ubicacion de objetos
-        jlMostrarPagos.setBounds(20, 23, 100, 15);
+        jlMostrarPagos.setBounds(20, 23, 85, 15);swich.setBounds(105, 10, 90, 45);
         jlimagePrestamos.setBounds(500, 10, 160, 130);
         jlimageInversiones.setBounds(500, 180, 160, 130);
         jlCC.setBounds(285, 23, 20, 16);
@@ -112,6 +113,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         
         //agregamos al panelcentro
         panelCenter.add(jlMostrarPagos);
+        panelCenter.add(swich);
         panelCenter.add(jlCC);
         
         panelCenter.add(jbVisualizarCliente);
@@ -133,73 +135,49 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }    
     //Eventos
     private void setupEvents(){
+        jbModificarCliente.setBackground(new Color(36, 83, 181));
+        jbRegistrarCliente.setBackground(new Color(36, 83, 181));
+        jbRegistrarInversion.setBackground(new Color(36, 83, 181));
+        jbRegistrarPrestamo.setBackground(new Color(36, 83, 181));
+        jbVerInversiones.setBackground(new Color(36, 83, 181));
+        jbVerPrestamos.setBackground(new Color(36, 83, 181));
+        jbVisualizarCliente.setBackground(new Color(36, 83, 181));
         setLocationRelativeTo(null);
         this.setResizable(false);
         table.getTableHeader().setReorderingAllowed(false);//evita reordenar las columnas
         table.getTableHeader().setResizingAllowed(false);//evita redimencionar las columnas
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //inabilitamos botones
-        jbModificarCliente.setEnabled(false);
-        jbRegistrarInversion.setEnabled(false);
-        jbRegistrarPrestamo.setEnabled(false);
-        jbVisualizarCliente.setEnabled(false);
-        jbVerPrestamos.setEnabled(false);
-        jbVerInversiones.setEnabled(false);
+        ClientSelect(false,false);//inabilitamos botones
         
-        table.addMouseListener(new MouseListener() {
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (table.getSelectedRows().length>1){
+                    table.clearSelection();
+                    ClientSelect(false,true);
+                }
+            }
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row = table.getSelectedRow();
                 try {
                     CCclienteSelected=""+tableModel.getValueAt(row, 1);
-                    jbModificarCliente.setEnabled(true);
-                    jbRegistrarInversion.setEnabled(true);
-                    jbRegistrarPrestamo.setEnabled(true);
-                    jbVisualizarCliente.setEnabled(true);
-                    jbVerPrestamos.setEnabled(true);
-                    jbVerInversiones.setEnabled(true);
+                    ClientSelect(true,false);
                 } catch (ArrayIndexOutOfBoundsException ex) {
-                    jbModificarCliente.setEnabled(false);
-                    jbRegistrarInversion.setEnabled(false);
-                    jbRegistrarPrestamo.setEnabled(false);
-                    jbVisualizarCliente.setEnabled(false);
-                    jbVerPrestamos.setEnabled(false);
-                    jbVerInversiones.setEnabled(false);
-                    Toolkit.getDefaultToolkit().beep();
+                    ClientSelect(false,true);
                 }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (table.getSelectedRows().length>1){
-                    table.clearSelection();
-                    jbModificarCliente.setEnabled(false);
-                    jbRegistrarInversion.setEnabled(false);
-                    jbRegistrarPrestamo.setEnabled(false);
-                    jbVisualizarCliente.setEnabled(false);
-                    jbVerPrestamos.setEnabled(false);
-                    jbVerInversiones.setEnabled(false);
-                    Toolkit.getDefaultToolkit().beep();
-                }
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                
             }
         });
-        
-        //evento de editar jtable
+        table.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (table.getSelectedRows().length>1){
+                    table.clearSelection();
+                    ClientSelect(false,true);
+                }
+            }
+        });
+            
         jbRegistrarPrestamo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -225,21 +203,36 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jbVerInversiones.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                Ver_Inversiones ver_inversiones = new Ver_Inversiones(mainframe,CCclienteSelected,cargo);
             }
         });
         
         jbVerPrestamos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Ver_Prestamos ver_prestamos = new Ver_Prestamos(mainframe,CCclienteSelected);
+                Ver_Prestamos ver_prestamos = new Ver_Prestamos(mainframe,CCclienteSelected,cargo);
+            }
+        });
+        
+        jbVisualizarCliente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Ver_Cliente ver_Cliente = new Ver_Cliente(mainframe, getCliente());
+            }
+        });
+        
+        jbModificarCliente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Modificar_Cliente modificar_Cliente = new Modificar_Cliente(mainframe, getCliente());
+                load();
             }
         });
         
         txaBuscar.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                txaBuscar.setText("");
+                if ("BUSCAR".equals(txaBuscar.getText()))txaBuscar.setText("");
             }
 
             @Override
@@ -289,6 +282,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         }
                     }
                 }
+                if (table.getSelectedRows().length>1 || table.getSelectedRows().length==0){
+                    ClientSelect(false,false);
+                }
+            }
+        });
+        
+        swich.addChangeSwitchListener(new ChangeSwitchListener() {
+            @Override
+            public void SwitchChanged() {
+                
             }
         });
     }
@@ -322,7 +325,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 
                 //String direccion = result.getString("dircli");
                 //String telefono = result.getString("telecli");
-                
                 //System.out.println("cedula " + CC + " NOMBRE: " + nombre + " APELLIDO: " + apellido + " DIRECCION: " + direccion + " telefono: " + telefono);
                 //System.out.println("cedula " + CC + " NOMBRE: " + nombre + " APELLIDO: " + apellido );
                 tableModel.addRow(values);
@@ -335,14 +337,36 @@ public class MenuPrincipal extends javax.swing.JFrame {
             System.out.println("ERROR DE CONEXION " + e.getMessage());
         }
     }
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
+    
+    private Cliente getCliente(){
+        Cliente cliente = null;
+        String url = "jdbc:postgresql://localhost:5432/InversionesPrestamos";
+        String usuario = "postgres";
+        String contraseña = "123";
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection conexion = DriverManager.getConnection(url, usuario,contraseña);
+            java.sql.Statement st = conexion.createStatement();
+            String sql;
+            sql = "Select * from clientes where ceducli like '" + CCclienteSelected + "' group by 1,2,3,4,5";
+            ResultSet result = conexion.createStatement().executeQuery(sql);
+            while(result.next()){
+                String CC = result.getString("ceducli");
+                String nombre = result.getString("nomcli");
+                String apellido = result.getString("apellicli");
+                String dir = result.getString("dircli");
+                String tele = result.getString("telecli");
+                cliente = new Cliente(CC,nombre,apellido,dir,tele);
+            }
+            result.close();
+            st.close();
+            conexion.close();
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.println("ERROR DE CONEXION " + e.getMessage());
+        }
+        return cliente;
+    }
+    
     /*
     TableModel dataModel = new AbstractTableModel() {
           public int getColumnCount() { return 10; }
@@ -352,9 +376,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
         JTable table = new JTable(dataModel);
         JScrollPane scrollpane = new JScrollPane(table);
     */
-    
-    
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
+    public void ClientSelect(boolean select,boolean sonido){
+        jbModificarCliente.setEnabled(select);
+        jbRegistrarInversion.setEnabled(select);
+        jbRegistrarPrestamo.setEnabled(select);
+        jbVisualizarCliente.setEnabled(select);
+        jbVerPrestamos.setEnabled(select);
+        jbVerInversiones.setEnabled(select);
+        if (sonido)Toolkit.getDefaultToolkit().beep();
+    }
 }

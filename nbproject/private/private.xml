@@ -3,15 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/lenovo/Documents/NetBeansProjects/SoftwareFinancieroAP/src/softwarefinancieroap/Inversion.java</file>
-            <file>file:/C:/Users/lenovo/Documents/NetBeansProjects/SoftwareFinancieroAP/src/Frames/SoftwareFinancieroAP.java</file>
             <file>file:/C:/Users/lenovo/Documents/NetBeansProjects/SoftwareFinancieroAP/src/Frames/MenuPrincipal.java</file>
-            <file>file:/C:/Users/lenovo/Documents/NetBeansProjects/SoftwareFinancieroAP/src/softwarefinancieroap/Cuota.java</file>
-            <file>file:/C:/Users/lenovo/Documents/NetBeansProjects/SoftwareFinancieroAP/src/softwarefinancieroap/Prestamo.java</file>
-            <file>file:/C:/Users/lenovo/Documents/NetBeansProjects/SoftwareFinancieroAP/src/Frames/Registrar_Fiador.java</file>
-            <file>file:/C:/Users/lenovo/Documents/NetBeansProjects/SoftwareFinancieroAP/src/Frames/Registrar_Prestamo.java</file>
-            <file>file:/C:/Users/lenovo/Documents/NetBeansProjects/SoftwareFinancieroAP/src/Frames/Registrar_Inversion.java</file>
-            <file>file:/C:/Users/lenovo/Documents/NetBeansProjects/SoftwareFinancieroAP/src/Frames/ConexionDataBase.java</file>
+            <file>file:/C:/Users/lenovo/Documents/NetBeansProjects/SoftwareFinancieroAP/src/Frames/Registrar_Cliente.java</file>
+            <file>file:/C:/Users/lenovo/Documents/NetBeansProjects/SoftwareFinancieroAP/src/Frames/IniciarSesion.java</file>
         </group>
     </open-files>
 </project-private>

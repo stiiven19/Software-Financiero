@@ -89,6 +89,8 @@ public class Registrar_Garantia extends JDialog {
     }//evento getgarantia
     
     private void setupEvents() {
+        jbCancelar.setBackground(new Color(36, 83, 181));
+        jbRegistrar.setBackground(new Color(36, 83, 181));
         this.setResizable(false);
         
         jbCancelar.addActionListener(new ActionListener() {
@@ -103,13 +105,31 @@ public class Registrar_Garantia extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 if (txCodigo.getText().length()>3 && txTipo.getText().length()>3 && txValor.getText().length()>3 && txUbicacion.getText().length()>3) {
                     garantia = new Garantia(txCodigo.getText(), txTipo.getText(), Double.parseDouble(txValor.getText()), txUbicacion.getText());
-                    JOptionPane.showMessageDialog(rootPane, "Garantia Registrada", "Info", JOptionPane.INFORMATION_MESSAGE);
-                    setVisible(false);
-                    dispose();
+                    String [] garantiaArray=garantia.Buscar_Garantia();
+                    if (garantiaArray!=null){//null si no hay garantia igual
+                        String msj="Ya hay una garantia con este codigo\n"
+                                + "Desea registrar esta como su garantia?"
+                                + "\n-Codigo: " + garantiaArray[0] 
+                                + "\n-Tipo: " + garantiaArray[1]
+                                + "\n-Valor: " + garantiaArray[2]
+                                + "\n-Ubicacion: " + garantiaArray[3];
+                        if(JOptionPane.showConfirmDialog(rootPane, msj, "Atención", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)==0){
+                            garantia = new Garantia(garantiaArray[0], garantiaArray[1], Double.parseDouble(garantiaArray[2]), garantiaArray[3]);
+                            JOptionPane.showMessageDialog(rootPane, "Garantia Registrada", "Info", JOptionPane.INFORMATION_MESSAGE); 
+                            setVisible(false);
+                            dispose();
+                        }else{
+                            garantia=null;
+                            txCodigo.setText("");
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(rootPane, "Garantia Registrada", "Info", JOptionPane.INFORMATION_MESSAGE);
+                        setVisible(false);
+                        dispose();
+                    }
                 }else{
                     JOptionPane.showMessageDialog(rootPane, "Rellenar Campos", "Atención!", JOptionPane.WARNING_MESSAGE);
                 }
-                
             }
         });
         
@@ -135,7 +155,7 @@ public class Registrar_Garantia extends JDialog {
                     e.consume();
                     Toolkit.getDefaultToolkit().beep();
                 }
-                if (txTipo.getText().length()+1>29){
+                if (txTipo.getText().length()+1>30){
                     e.consume();
                 }
             }
@@ -145,6 +165,10 @@ public class Registrar_Garantia extends JDialog {
             @Override
             public void keyTyped(KeyEvent e){
                 char c = e.getKeyChar();
+                if(!(c>=48 && c<=57  ) && !(c>=00 && c<=31) && c!=127){
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
                 if (txCodigo.getText().length()+1>10){
                     e.consume();
                 }

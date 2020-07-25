@@ -13,12 +13,10 @@ import java.sql.*;
  */
 public class Inversion extends Transaccion{
     private final String numeroCuentaBancaria;
-    int numerocuotas;
 
     public Inversion(String numeroCuentaBancaria, String ceducli, String codtransaccion, String fechInicio, String fechTermino, double monto, double interes,int numerocuotas) {
-        super(ceducli, codtransaccion, fechInicio, fechTermino, monto, interes);
+        super(ceducli, codtransaccion, fechInicio, fechTermino, monto, interes,numerocuotas);
         this.numeroCuentaBancaria = numeroCuentaBancaria;
-        this.numerocuotas=numerocuotas;
     
     }
     
@@ -51,8 +49,8 @@ public class Inversion extends Transaccion{
         return retorno;
     }
     
-    public boolean Buscar_Inversion(){
-        boolean retorno = false;
+    public int Buscar_Inversion(){//1 = no hay inversiones en proceso ni iguales 2=Inversion con el mismo codigo 3=ya tiene inversion en proceso
+        int retorno = 1;
         String url = "jdbc:postgresql://localhost:5432/InversionesPrestamos";
         String usuario = "postgres";
         String contraseña = "123";
@@ -64,7 +62,13 @@ public class Inversion extends Transaccion{
             java.sql.Statement st = conexion.createStatement();
             ResultSet result = conexion.createStatement().executeQuery(sql);
             while (result.next()) {         
-                retorno = true;
+                retorno = 2;
+            }
+            
+            sql="select * from cuotainversion join inversiones on cuotainversion.codinversion=inversiones.codinversion where ceduinversionista like '" + ceducli + "' and estadocuota in ('No Pagada','Espera')";
+            ResultSet result2 = conexion.createStatement().executeQuery(sql);
+            while (result2.next()) {
+                retorno = 3;
             }
             st.close();
             conexion.close();
