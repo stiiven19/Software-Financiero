@@ -183,32 +183,20 @@ Para más detalles, ver: `database/README.md`
 ## 🖼️ **Capturas de Pantalla de la Aplicación**
 
 ### **Interfaz Principal**
-- ![Login](images/init.jpg) - Pantalla de inicio de sesión
-- ![Menú Principal](images/screenshots/Inicio%20y%20Menu.webp) - Menú principal del sistema
+- ![Menú Principal](images/screenshots/Inicio%20y%20Menu.webp) - inicio de sesión y Menú principal del sistema
 
 ### **Gestión de Clientes**
-- ![Registro de Clientes](images/screenshots/Ver%20y%20Registrar%20Cliente.webp) - Formulario de registro y consulta
-- ![Lista de Clientes](images/Clientes.png) - Vista general de clientes
+- ![Registro de Clientes](images/screenshots/Ver%20y%20Registrar%20Cliente.webp) - Formulario de registro y consulta de cliente
 
 ### **Gestión de Préstamos**
-- ![Registrar Préstamo](images/screenshots/Registrar%20Prestamo.webp) - Formulario de nuevos préstamos
+- ![Registrar Préstamo](images/screenshots/Registrar%20Prestamo.webp) - Formulario de registro de préstamos
 - ![Ver Préstamos](images/screenshots/Ver%20Prestamo.webp) - Consulta y aprobación de préstamos
-- ![Lista de Préstamos](images/verPrestamos.jpg) - Vista general de préstamos
 
 ### **Gestión de Inversiones**
-- ![Registrar Inversión](images/screenshots/Registrar%20Inversion.webp) - Formulario de inversiones
-- ![Ver Inversiones](images/verInversiones.jpg) - Consulta de inversiones activas
-
-### **Gestión de Garantías**
-- ![Registro de Garantías](images/Garantias.PNG) - Formulario de garantías
-- ![Tipos de Garantía](images/Garantias2.PNG) - Garantías de vehículos e inmuebles
+- ![Registrar Inversión](images/screenshots/Registrar%20Inversion.webp) - Formulario de registro de inversiones
 
 ### **Sistema de Cuotas**
 - ![Cuotas de Pago](images/screenshots/Cuotas%20de%20Pago.webp) - Gestión de cuotas de préstamos e inversiones
-
-### **Elementos Visuales**
-- ![Logo](images/logo.png) - Logo de la aplicación
-- ![Icono Banco](images/banco.jpg) - Icono de módulo financiero
 
 ## 🔧 Tecnologías Utilizadas
 
