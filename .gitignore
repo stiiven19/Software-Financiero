@@ -1,0 +1,29 @@
+# Compiled files
+build/
+dist/
+*.class
+*.jar
+
+# IDE files
+.nbproject/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Database backups
+*.backup
+*.dump
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# CSV data files (optional - comment if you want to track them)
+# database/data/*.csv

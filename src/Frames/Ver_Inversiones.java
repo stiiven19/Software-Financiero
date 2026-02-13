@@ -110,7 +110,7 @@ public class Ver_Inversiones extends JDialog{
         panel.add(jlInversionesConcluidas);
         
         panel.add(jbVerCronogramaCuotas);
-        panel.add(jbVerInversion);
+        //panel.add(jbVerInversion);
         
         panel.add(jscrollpaneProceso);
         panel.add(jscrollpaneConcluido);

@@ -136,6 +136,7 @@ public class IniciarSesion extends javax.swing.JFrame{
         }catch(ClassNotFoundException | SQLException e){
             System.out.println("ERROR DE CONEXION " + e.getMessage());
         }
+        //return 1;
         return retorno;
     }
 }

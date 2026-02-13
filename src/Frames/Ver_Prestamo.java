@@ -229,10 +229,16 @@ public class Ver_Prestamo extends JDialog{
     }
 
     private void setupEvents() {
-        jbAprobar.setBackground(new Color(36, 83, 181));
-        jbRechazar.setBackground(new Color(36, 83, 181));
         jbRegresar.setBackground(new Color(36, 83, 181));
-        if (!cargo){
+        
+        // Solo configurar botones de aprobar/rechazar si existen
+        if (jbAprobar != null) {
+            jbAprobar.setBackground(new Color(36, 83, 181));
+        }
+        if (jbRechazar != null) {
+            jbRechazar.setBackground(new Color(36, 83, 181));
+        }
+        if (!cargo && jbAprobar != null){
             jbAprobar.setEnabled(false);
         }
         this.setResizable(false);
