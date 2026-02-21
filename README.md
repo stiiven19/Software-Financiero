@@ -1,4 +1,4 @@
-# Software Financiero AP - Sistema Bancario Completo
+# Sistema Bancario - Software Financiero AP
 
 ![https://img.shields.io/badge/Java-8%2B-orange](https://img.shields.io/badge/Java-8%2B-orange)
 ![https://img.shields.io/badge/PostgreSQL-12%2B-blue](https://img.shields.io/badge/PostgreSQL-12%2B-blue)
